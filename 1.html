@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html class="dark" lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>제주 인구데이터 포털 - 종합 대시보드</title>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=JetBrains+Mono:wght@100..900&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-secondary": "#522300", "surface": "#0e141a", "surface-container": "#1a2026", "on-tertiary": "#003739",
+            "on-primary-container": "#768497", "on-tertiary-container": "#009198", "inverse-primary": "#525f71",
+            "on-secondary-fixed-variant": "#753400", "primary-fixed-dim": "#bac8dc", "surface-dim": "#0e141a",
+            "on-tertiary-fixed-variant": "#004f53", "primary": "#bac8dc", "secondary-container": "#ff7f1c",
+            "inverse-on-surface": "#2b3137", "tertiary-fixed-dim": "#3edae3", "tertiary-container": "#001e20",
+            "background": "#0e141a", "error": "#ffb4ab", "on-error": "#690005", "surface-container-highest": "#2f353c",
+            "on-error-container": "#ffdad6", "primary-fixed": "#d6e4f9", "tertiary-fixed": "#6bf6ff",
+            "on-secondary-fixed": "#321200", "on-surface-variant": "#c4c6cc", "secondary-fixed-dim": "#ffb68b",
+            "outline-variant": "#44474c", "on-primary-fixed": "#0f1c2c", "surface-container-lowest": "#080f14",
+            "on-surface": "#dde3eb", "surface-container-low": "#161c22", "surface-bright": "#333a40",
+            "surface-container-high": "#242b31", "secondary": "#ffb68b", "secondary-fixed": "#ffdbc8",
+            "on-primary-fixed-variant": "#3a4859", "on-primary": "#243141", "on-tertiary-fixed": "#002022",
+            "on-secondary-container": "#602a00", "on-background": "#dde3eb", "primary-container": "#0d1b2a",
+            "error-container": "#93000a", "outline": "#8e9196", "surface-tint": "#bac8dc", "tertiary": "#3edae3",
+            "surface-variant": "#2f353c", "inverse-surface": "#dde3eb"
+          },
+          "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" },
+          "spacing": { "gutter": "1.25rem", "space-xl": "2.25rem", "margin-mobile": "1rem", "gutter-lg": "1.75rem", "margin": "1.5rem", "space-lg": "1.5rem", "space-xs": "0.25rem", "margin-desktop": "2.5rem", "space-sm": "0.5rem", "space-md": "1rem" },
+          "fontFamily": { "body-lg": ["Inter"], "display-hero-mobile": ["Inter"], "headline-lg": ["Inter"], "headline-md": ["Inter"], "label-ui": ["Inter"], "kpi-metric-lg": ["JetBrains Mono"], "headline-lg-mobile": ["Inter"], "body-sm": ["Inter"], "label-mono": ["JetBrains Mono"], "body-md": ["Inter"], "kpi-metric-md": ["JetBrains Mono"], "display-hero": ["Inter"], "headline-sm": ["Inter"] },
+          "fontSize": { "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }], "headline-lg": ["30px", { "lineHeight": "38px", "fontWeight": "600" }], "headline-md": ["22px", { "lineHeight": "30px", "fontWeight": "600" }], "label-ui": ["12px", { "lineHeight": "16px", "fontWeight": "500" }], "kpi-metric-lg": ["36px", { "lineHeight": "44px", "fontWeight": "700" }], "body-sm": ["12px", { "lineHeight": "18px", "fontWeight": "400" }], "label-mono": ["11px", { "lineHeight": "16px", "fontWeight": "500" }], "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }], "headline-sm": ["18px", { "lineHeight": "26px", "fontWeight": "600" }] }
+        }
+      }
+    };
+  </script>
+  <style>
+    @layer base { html,body { margin:0; padding:0; } body { overscroll-behavior:none; } }
+    ::-webkit-scrollbar { display:none; }
+  </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased selection:bg-tertiary selection:text-surface">
+  <header class="fixed top-0 left-0 right-0 z-50 bg-surface/85 backdrop-blur-xl border-b border-surface-container-highest">
+    <div class="h-28 w-full px-margin-desktop flex flex-col justify-between">
+      <div class="h-16 flex items-center justify-between gap-space-md">
+        <div class="flex items-center gap-space-md">
+          <a href="1.html" class="flex items-center gap-space-sm">
+            <div class="w-9 h-9 rounded-xl bg-primary-container flex items-center justify-center">
+              <span class="material-symbols-outlined text-tertiary">analytics</span>
+            </div>
+            <div class="flex flex-col">
+              <span class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-semibold">제주 인구데이터 포털</span>
+              <span class="font-label-mono text-label-mono text-tertiary uppercase tracking-wider">Jeju Demographic Intelligence</span>
+            </div>
+          </a>
+          <div class="hidden xl:block h-6 w-px bg-surface-container-highest mx-space-xs"></div>
+          <div class="hidden xl:flex items-center gap-space-xs">
+            <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+            <span class="font-label-mono text-label-mono text-on-surface-variant">최근 갱신: 2026년 10월 기준</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-space-md">
+          <button onclick="alert('데이터 내보내기 기능 준비 중입니다.')" class="flex items-center gap-space-xs bg-secondary-container hover:bg-on-secondary-container text-on-secondary font-headline-sm text-body-md font-semibold px-space-md py-space-xs rounded-xl transition-all shadow-md active:scale-95">
+            <span class="material-symbols-outlined text-lg">download</span>
+            <span>데이터 내보내기</span>
+          </button>
+        </div>
+      </div>
+      <div class="h-12 flex items-center justify-between">
+        <nav class="flex items-center gap-space-xs">
+          <a class="px-space-md py-space-xs transition-all bg-primary-container text-on-primary-container font-semibold rounded-xl font-label-ui text-label-ui" href="1.html">종합 대시보드</a>
+          <a class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-xl font-label-ui text-label-ui transition-all" href="2.html">출생·인구 동향</a>
+          <a class="px-space-md py-space-xs text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high rounded-xl font-label-ui text-label-ui transition-all" href="3.html">행정구역별 통계</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="w-full pt-28 bg-surface min-h-screen">
+    <div class="w-full px-margin-desktop py-space-lg flex flex-col gap-space-xl">
+      <!-- Title Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-md">
+        <div class="flex flex-col">
+          <div class="flex items-center gap-space-xs font-label-mono text-label-mono text-tertiary-fixed-dim uppercase tracking-wider mb-1">
+            <span>제주특별자치도 자치행정데이터</span>
+            <span>/</span>
+            <span class="text-on-surface">인구동향 모니터링 시스템</span>
+          </div>
+          <div class="flex items-baseline gap-space-sm">
+            <h1 class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">제주도 인구 현황 대시보드</h1>
+            <span class="font-label-mono text-label-mono text-on-surface-variant bg-surface-container-high px-2 py-0.5 rounded-lg">2026년 10월 종합집계</span>
+          </div>
+        </div>
+      </div>
+
+      <section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-space-md">
+        <!-- KPI 1 -->
+        <div class="bg-surface-container-low rounded-xl p-space-md flex flex-col justify-between border border-surface-container-highest/60 hover:border-tertiary/40 transition-all">
+          <div class="flex items-start justify-between">
+            <span class="font-label-mono text-label-mono text-on-surface-variant uppercase">제주 총 주민등록인구</span>
+            <span class="material-symbols-outlined text-outline text-lg">groups</span>
+          </div>
+          <div class="my-space-sm">
+            <div class="flex items-baseline gap-1">
+              <span class="font-kpi-metric-lg text-kpi-metric-lg text-on-surface tracking-tight">671,250</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">명</span>
+            </div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-error bg-error-container/20 font-label-mono text-label-mono font-semibold">
+                <span class="material-symbols-outlined text-xs">arrow_drop_down</span> 342명 (-0.05%)
+              </span>
+              <span class="font-label-mono text-label-mono text-outline">전월대비</span>
+            </div>
+          </div>
+          <div class="pt-2 flex justify-between items-center font-label-mono text-label-mono text-on-surface-variant border-t border-surface-container-highest/40">
+            <span>제주시 491,820명</span>
+            <span>서귀포 179,430명</span>
+          </div>
+        </div>
+
+        <!-- KPI 2 -->
+        <div class="bg-surface-container-low rounded-xl p-space-md flex flex-col justify-between border border-surface-container-highest/60 hover:border-tertiary/40 transition-all">
+          <div class="flex items-start justify-between">
+            <span class="font-label-mono text-label-mono text-on-surface-variant uppercase">합계출산율 (잠정)</span>
+            <span class="material-symbols-outlined text-tertiary text-lg">child_friendly</span>
+          </div>
+          <div class="my-space-sm">
+            <div class="flex items-baseline gap-1">
+              <span class="font-kpi-metric-lg text-kpi-metric-lg text-tertiary tracking-tight">0.83</span>
+              <span class="font-body-sm text-body-sm text-tertiary-fixed-dim">명</span>
+            </div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-tertiary bg-tertiary-container/80 font-label-mono text-label-mono font-semibold">
+                <span>= 전년수준 유지</span>
+              </span>
+              <span class="font-label-mono text-label-mono text-secondary">전국 대비 +0.11명</span>
+            </div>
+          </div>
+          <div class="pt-2 flex justify-between items-center font-label-mono text-label-mono text-on-surface-variant border-t border-surface-container-highest/40">
+            <span>전국평균: 0.72명</span>
+            <span class="text-tertiary font-semibold">전국 3위 유지</span>
+          </div>
+        </div>
+
+        <!-- KPI 3 -->
+        <div class="bg-surface-container-low rounded-xl p-space-md flex flex-col justify-between border border-surface-container-highest/60 hover:border-tertiary/40 transition-all">
+          <div class="flex items-start justify-between">
+            <span class="font-label-mono text-label-mono text-on-surface-variant uppercase">당월 신규 출생아 수</span>
+            <span class="material-symbols-outlined text-secondary-container text-lg">hotel_class</span>
+          </div>
+          <div class="my-space-sm">
+            <div class="flex items-baseline gap-1">
+              <span class="font-kpi-metric-lg text-kpi-metric-lg text-secondary-fixed tracking-tight">268</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">명</span>
+            </div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-secondary-container bg-secondary-container/10 font-label-mono text-label-mono font-semibold">
+                <span class="material-symbols-outlined text-xs">arrow_drop_up</span> 14명 (+5.5%)
+              </span>
+              <span class="font-label-mono text-label-mono text-outline">전월대비</span>
+            </div>
+          </div>
+          <div class="pt-2 flex justify-between items-center font-label-mono text-label-mono text-on-surface-variant border-t border-surface-container-highest/40">
+            <span>남아 138명</span>
+            <span>여아 130명</span>
+          </div>
+        </div>
+
+        <!-- KPI 4 -->
+        <div class="bg-surface-container-low rounded-xl p-space-md flex flex-col justify-between border border-surface-container-highest/60 hover:border-tertiary/40 transition-all">
+          <div class="flex items-start justify-between">
+            <span class="font-label-mono text-label-mono text-on-surface-variant uppercase">당월 자연증감</span>
+            <span class="material-symbols-outlined text-outline text-lg">heart_broken</span>
+          </div>
+          <div class="my-space-sm">
+            <div class="flex items-baseline gap-1">
+              <span class="font-kpi-metric-lg text-kpi-metric-lg text-error tracking-tight">-215</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">명</span>
+            </div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-error bg-error-container/20 font-label-mono text-label-mono font-semibold">자연감소</span>
+              <span class="font-label-mono text-label-mono text-outline">사망자 483명</span>
+            </div>
+          </div>
+          <div class="pt-2 flex justify-between items-center font-label-mono text-label-mono text-on-surface-variant border-t border-surface-container-highest/40">
+            <span>누적 자연감소: -1,894명</span>
+          </div>
+        </div>
+
+        <!-- KPI 5 -->
+        <div class="bg-surface-container-low rounded-xl p-space-md flex flex-col justify-between border border-surface-container-highest/60 hover:border-tertiary/40 transition-all">
+          <div class="flex items-start justify-between">
+            <span class="font-label-mono text-label-mono text-on-surface-variant uppercase">순이동 (전입-전출)</span>
+            <span class="material-symbols-outlined text-outline text-lg">swap_horiz</span>
+          </div>
+          <div class="my-space-sm">
+            <div class="flex items-baseline gap-1">
+              <span class="font-kpi-metric-lg text-kpi-metric-lg text-error tracking-tight">-127</span>
+              <span class="font-body-sm text-body-sm text-on-surface-variant">명</span>
+            </div>
+            <div class="flex items-center gap-2 mt-1">
+              <span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded text-error bg-error-container/20 font-label-mono text-label-mono font-semibold">순유출</span>
+              <span class="font-label-mono text-label-mono text-outline">전월(-165명) 대비 완화</span>
+            </div>
+          </div>
+          <div class="pt-2 flex justify-between items-center font-label-mono text-label-mono text-on-surface-variant border-t border-surface-container-highest/40">
+            <span>전입 6,410명</span>
+            <span>전출 6,537명</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+        <section class="lg:col-span-8 bg-surface-container-low rounded-xl p-space-lg border border-surface-container-highest/60 flex flex-col justify-between">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-space-sm pb-space-sm border-b border-surface-container-highest/40">
+            <div>
+              <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight flex items-center gap-2">
+                <span class="w-2.5 h-2.5 rounded bg-tertiary"></span>
+                출생아 수 및 합계출산율 추이
+              </h2>
+              <p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">최근 12개월간의 출생 동향 분석</p>
+            </div>
+          </div>
+          <div class="w-full h-80 mt-4">
+            <canvas id="overviewChart"></canvas>
+          </div>
+        </section>
+
+        <section class="lg:col-span-4 bg-surface-container-low rounded-xl p-space-lg border border-surface-container-highest/60 flex flex-col justify-between">
+          <div>
+            <h2 class="font-headline-sm text-headline-sm text-on-surface font-semibold tracking-tight flex items-center gap-2 border-b border-surface-container-highest/40 pb-space-sm">
+              <span class="w-2.5 h-2.5 rounded bg-secondary-container"></span>
+              권역별 인구 분포 비율
+            </h2>
+            <div class="w-full h-64 mt-4 flex justify-center items-center">
+              <canvas id="regionPieChart"></canvas>
+            </div>
+          </div>
+          <div class="mt-4 p-3 bg-surface-container-high rounded-lg text-xs text-on-surface-variant flex justify-between">
+            <span>제주시 동지역 중심 집중도: <strong class="text-tertiary">58.2%</strong></span>
+            <a href="3.html" class="text-secondary hover:underline flex items-center gap-0.5">상세보기 <span class="material-symbols-outlined text-xs">arrow_forward</span></a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    window.onload = function() {
+      // 1. Line & Bar Chart
+      const ctx1 = document.getElementById('overviewChart').getContext('2d');
+      new Chart(ctx1, {
+        type: 'bar',
+        data: {
+          labels: ['23.11', '23.12', '24.01', '24.02', '24.03', '24.04', '24.05', '24.06', '24.07', '24.08', '24.09', '24.10'],
+          datasets: [{
+            label: '출생아 수 (명)',
+            data: [275, 240, 290, 265, 280, 255, 270, 245, 260, 250, 254, 268],
+            backgroundColor: 'rgba(255, 127, 28, 0.65)',
+            borderColor: '#ff7f1c',
+            borderWidth: 1,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { labels: { color: '#dde3eb', font: { family: 'Inter' } } } },
+          scales: {
+            x: { ticks: { color: '#8e9196' }, grid: { color: 'rgba(142, 145, 150, 0.1)' } },
+            y: { ticks: { color: '#8e9196' }, grid: { color: 'rgba(142, 145, 150, 0.1)' } }
+          }
+        }
+      });
+
+      // 2. Pie Chart
+      const ctx2 = document.getElementById('regionPieChart').getContext('2d');
+      new Chart(ctx2, {
+        type: 'doughnut',
+        data: {
+          labels: ['제주시 동지역', '제주시 읍면', '서귀포시 동지역', '서귀포시 읍면'],
+          datasets: [{
+            data: [390000, 101820, 102000, 77430],
+            backgroundColor: ['#3edae3', '#bac8dc', '#ff7f1c', '#ffb68b'],
+            borderWidth: 0
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { position: 'bottom', labels: { color: '#dde3eb', font: { family: 'Inter' } } } }
+        }
+      });
+    };
+  </script>
+</body>
+</html>
